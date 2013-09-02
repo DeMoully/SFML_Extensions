@@ -6,6 +6,7 @@
 
 #include <SFML/System/String.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 
 #include "SpriteHandler.hpp"
 #include "Animation.hpp"
@@ -24,10 +25,10 @@ namespace sfext
 		std::map<sf::String, Animation> animations;
 	public:
 		// Constructors
-		explicit AnimationHandler(sf::RenderTarget & target) : sprites(target)
+		AnimationHandler()
 		{
 		}
-		AnimationHandler         (const AnimationHandler & rhs) : sprites(rhs.sprites), animations(rhs.animations)
+		AnimationHandler(const AnimationHandler & rhs) : sprites(rhs.sprites), animations(rhs.animations)
 		{
 		}
 		// Destructor
@@ -172,49 +173,49 @@ namespace sfext
 			}
 			return false;
 		}
-		void draw           (const sf::String & alias, sf::RenderStates states = sf::RenderStates::Default) const
+		void draw           (sf::RenderTarget & target, sf::String & alias, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
-				animations.at(alias).draw(sprites.getRenderTarget());
+				animations.at(alias).draw(target);
 			}
 		}
-		void draw           (const sf::String & alias, std::size_t frame, sf::RenderStates states = sf::RenderStates::Default) const
+		void draw           (sf::RenderTarget & target, const sf::String & alias, std::size_t frame, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
-				animations.at(alias).draw(sprites.getRenderTarget(), frame, states);
+				animations.at(alias).draw(target, frame, states);
 			}
 		}
-		void draw           (const sf::String & alias, const sf::Time & time, sf::RenderStates states = sf::RenderStates::Default) const
+		void draw           (sf::RenderTarget & target, const sf::String & alias, const sf::Time & time, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
-				animations.at(alias).draw(sprites.getRenderTarget(), time, states);
+				animations.at(alias).draw(target, time, states);
 			}
 		}
-		void draw           (const sf::String & alias, const sf::Vector2f & position, sf::RenderStates states = sf::RenderStates::Default) const
+		void draw           (sf::RenderTarget & target, const sf::String & alias, const sf::Vector2f & position, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
-				animations.at(alias).draw(sprites.getRenderTarget(), position, states);
+				animations.at(alias).draw(target, position, states);
 			}
 		}
-		void draw           (const sf::String & alias, const sf::Vector2f & position, const sf::Time & time, sf::RenderStates states = sf::RenderStates::Default) const
+		void draw           (sf::RenderTarget & target, const sf::String & alias, const sf::Vector2f & position, const sf::Time & time, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
-				animations.at(alias).draw(sprites.getRenderTarget(), position, time, states);
+				animations.at(alias).draw(target, position, time, states);
 			}
 		}
-		void draw           (const sf::String & alias, const sf::Vector2f & position, std::size_t frame, sf::RenderStates states = sf::RenderStates::Default) const
+		void draw           (sf::RenderTarget & target, const sf::String & alias, const sf::Vector2f & position, std::size_t frame, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
-				animations.at(alias).draw(sprites.getRenderTarget(), position, frame, states);
+				animations.at(alias).draw(target, position, frame, states);
 			}
 		}
-		void batch          (const sf::String & alias, const std::vector<sf::Vector2f> & positions, sf::RenderStates states = sf::RenderStates::Default) const
+		void batch          (sf::RenderTarget & target, const sf::String & alias, const std::vector<sf::Vector2f> & positions, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
@@ -228,10 +229,10 @@ namespace sfext
 					vertices.append(sf::Vertex(position + sf::Vector2f(0.f, static_cast<float>(rectangle.height)), sf::Vector2f(static_cast<float>(rectangle.left), static_cast<float>(rectangle.top + rectangle.height))));
 				}
 				states.texture = &sprites.getTextureHandler().getTexture(alias);
-				sprites.getRenderTarget().draw(vertices, states);
+				target.draw(vertices, states);
 			}
 		}
-		void batch          (const sf::String & alias, const std::vector<sf::Vector2f> & positions, std::size_t frame, sf::RenderStates states = sf::RenderStates::Default) const
+		void batch          (sf::RenderTarget & target, const sf::String & alias, const std::vector<sf::Vector2f> & positions, std::size_t frame, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
@@ -245,10 +246,10 @@ namespace sfext
 					vertices.append(sf::Vertex(position + sf::Vector2f(0.f, static_cast<float>(rectangle.height)), sf::Vector2f(static_cast<float>(rectangle.left), static_cast<float>(rectangle.top + rectangle.height))));
 				}
 				states.texture = &sprites.getTextureHandler().getTexture(alias);
-				sprites.getRenderTarget().draw(vertices, states);
+				target.draw(vertices, states);
 			}
 		}
-		void batch          (const sf::String & alias, const std::vector<sf::Vector2f> & positions, const sf::Time & time, sf::RenderStates states = sf::RenderStates::Default) const
+		void batch          (sf::RenderTarget & target, const sf::String & alias, const std::vector<sf::Vector2f> & positions, const sf::Time & time, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias))
 			{
@@ -262,10 +263,10 @@ namespace sfext
 					vertices.append(sf::Vertex(position + sf::Vector2f(0.f, static_cast<float>(rectangle.height)), sf::Vector2f(static_cast<float>(rectangle.left), static_cast<float>(rectangle.top + rectangle.height))));
 				}
 				states.texture = &sprites.getTextureHandler().getTexture(alias);
-				sprites.getRenderTarget().draw(vertices, states);
+				target.draw(vertices, states);
 			}
 		}
-		void batch          (const sf::String & alias, const std::vector<sf::Vector2f> & positions, const std::vector<std::size_t> & frames, sf::RenderStates states = sf::RenderStates::Default) const
+		void batch          (sf::RenderTarget & target, const sf::String & alias, const std::vector<sf::Vector2f> & positions, const std::vector<std::size_t> & frames, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias) && positions.size() == frames.size())
 			{
@@ -280,10 +281,10 @@ namespace sfext
 					vertices.append(sf::Vertex(positions.at(i) + sf::Vector2f(0.f, static_cast<float>(rectangle.height)), sf::Vector2f(static_cast<float>(rectangle.left), static_cast<float>(rectangle.top + rectangle.height))));
 				}
 				states.texture = &sprites.getTextureHandler().getTexture(alias);
-				sprites.getRenderTarget().draw(vertices, states);
+				target.draw(vertices, states);
 			}
 		}
-		void batch          (const sf::String & alias, const std::vector<sf::Vector2f> & positions, const std::vector<sf::Time> & times, sf::RenderStates states = sf::RenderStates::Default) const
+		void batch          (sf::RenderTarget & target, const sf::String & alias, const std::vector<sf::Vector2f> & positions, const std::vector<sf::Time> & times, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasAnimation(alias) && positions.size() == times.size())
 			{
@@ -298,7 +299,7 @@ namespace sfext
 					vertices.append(sf::Vertex(positions.at(i) + sf::Vector2f(0.f, static_cast<float>(rectangle.height)), sf::Vector2f(static_cast<float>(rectangle.left), static_cast<float>(rectangle.top + rectangle.height))));
 				}
 				states.texture = &sprites.getTextureHandler().getTexture(alias);
-				sprites.getRenderTarget().draw(vertices, states);
+				target.draw(vertices, states);
 			}
 		}
 		// Iterators

@@ -15,15 +15,14 @@ namespace sfext
 	class TextHandler
 	{
 	private:
-		sf::RenderTarget & target;
 		FontHandler fonts;
 		sf::Text text;
 	public:
 		// Constructors
-		explicit TextHandler(sf::RenderTarget & trgt) : target(trgt)
+		TextHandler()
 		{
 		}
-		TextHandler         (const TextHandler & rhs) : target(rhs.target), fonts(rhs.fonts), text(rhs.text)
+		TextHandler(const TextHandler & rhs) : fonts(rhs.fonts), text(rhs.text)
 		{
 		}
 		// Destructor
@@ -31,10 +30,6 @@ namespace sfext
 		{
 		}
 		// Accessors
-		const sf::RenderTarget & getRenderTarget () const
-		{
-			return target;
-		}
 		const FontHandler &      getFontHandler  () const
 		{
 			return fonts;
@@ -80,19 +75,19 @@ namespace sfext
 			text.setPosition(x, y);
 		}
 		// Utilities
-		void write             (const sf::String & str)
+		void write             (sf::RenderTarget & target, const sf::String & str)
 		{
 			text.setString(str);
 			target.draw(text);
 		}
-		void write             (const sf::String & str, const sf::Vector2f & pos)
+		void write             (sf::RenderTarget & target, const sf::String & str, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
-			write(str);
+			write(target, str);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (const sf::String & str)
+		void writeRightAligned (sf::RenderTarget & target, const sf::String & str)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(str);
@@ -100,7 +95,7 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (const sf::String & str, const sf::Vector2f & pos)
+		void writeRightAligned (sf::RenderTarget & target, const sf::String & str, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(str);
@@ -108,7 +103,7 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void writeCenterAligned(const sf::String & str)
+		void writeCenterAligned(sf::RenderTarget & target, const sf::String & str)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(str);
@@ -116,7 +111,7 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void writeCenterAligned(const sf::String & str, const sf::Vector2f & pos)
+		void writeCenterAligned(sf::RenderTarget & target, const sf::String & str, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(str);
@@ -125,13 +120,13 @@ namespace sfext
 			setPosition(tempPos);
 		}
 		template <class T>
-		void write             (const sf::Vector2<T> & vec)
+		void write             (sf::RenderTarget & target, const sf::Vector2<T> & vec)
 		{
 			text.setString("(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ")");
 			target.draw(text);
 		}
 		template <class T>
-		void write             (const sf::Vector2<T> & vec, const sf::Vector2f & pos)
+		void write             (sf::RenderTarget & target, const sf::Vector2<T> & vec, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
@@ -139,7 +134,7 @@ namespace sfext
 			setPosition(tempPos);
 		}
 		template <class T>
-		void writeRightAligned (const sf::Vector2<T> & vec)
+		void writeRightAligned (sf::RenderTarget & target, const sf::Vector2<T> & vec)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString("(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ")");
@@ -148,7 +143,7 @@ namespace sfext
 			setPosition(tempPos);
 		}
 		template <class T>
-		void writeRightAligned (const sf::Vector2<T> & vec, const sf::Vector2f & pos)
+		void writeRightAligned (sf::RenderTarget & target, const sf::Vector2<T> & vec, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString("(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ")");
@@ -157,13 +152,13 @@ namespace sfext
 			setPosition(tempPos);
 		}
 		template <class T>
-		void write             (const sf::Vector3<T> & vec)
+		void write             (sf::RenderTarget & target, const sf::Vector3<T> & vec)
 		{
 			text.setString("(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ", " + std::to_string(vec.z) + ")");
 			target.draw(text);
 		}
 		template <class T>
-		void write             (const sf::Vector3<T> & vec, const sf::Vector2f & pos)
+		void write             (sf::RenderTarget & target, const sf::Vector3<T> & vec, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
@@ -171,7 +166,7 @@ namespace sfext
 			setPosition(tempPos);
 		}
 		template <class T>
-		void writeRightAligned (const sf::Vector3<T> & vec)
+		void writeRightAligned (sf::RenderTarget & target, const sf::Vector3<T> & vec)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString("(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ", " + std::to_string(vec.z) + ")");
@@ -180,7 +175,7 @@ namespace sfext
 			setPosition(tempPos);
 		}
 		template <class T>
-		void writeRightAligned (const sf::Vector3<T> & vec, const sf::Vector2f & pos)
+		void writeRightAligned (sf::RenderTarget & target, const sf::Vector3<T> & vec, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString("(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ", " + std::to_string(vec.z) + ")");
@@ -188,19 +183,19 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void write             (int val)
+		void write             (sf::RenderTarget & target, int val)
 		{
 			text.setString(std::to_string(val));
 			target.draw(text);
 		}
-		void write             (int val, const sf::Vector2f & pos)
+		void write             (sf::RenderTarget & target, int val, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
-			write(val);
+			write(target, val);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (int val)
+		void writeRightAligned (sf::RenderTarget & target, int val)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(std::to_string(val));
@@ -208,7 +203,7 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (int val, const sf::Vector2f & pos)
+		void writeRightAligned (sf::RenderTarget & target, int val, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(std::to_string(val));
@@ -216,19 +211,19 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void write             (float val)
+		void write             (sf::RenderTarget & target, float val)
 		{
 			text.setString(std::to_string(val));
 			target.draw(text);
 		}
-		void write             (float val, const sf::Vector2f & pos)
+		void write             (sf::RenderTarget & target, float val, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
-			write(val);
+			write(target, val);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (float val)
+		void writeRightAligned (sf::RenderTarget & target, float val)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(std::to_string(val));
@@ -236,7 +231,7 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (float val, const sf::Vector2f & pos)
+		void writeRightAligned (sf::RenderTarget & target, float val, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(std::to_string(val));
@@ -244,19 +239,19 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void write             (double val)
+		void write             (sf::RenderTarget & target, double val)
 		{
 			text.setString(std::to_string(val));
 			target.draw(text);
 		}
-		void write             (double val, const sf::Vector2f & pos)
+		void write             (sf::RenderTarget & target, double val, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
-			write(val);
+			write(target, val);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (double val)
+		void writeRightAligned (sf::RenderTarget & target, double val)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(std::to_string(val));
@@ -264,7 +259,7 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (double val, const sf::Vector2f & pos)
+		void writeRightAligned (sf::RenderTarget & target, double val, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(std::to_string(val));
@@ -272,19 +267,19 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void write             (const sf::Time & val)
+		void write             (sf::RenderTarget & target, const sf::Time & val)
 		{
 			text.setString(std::to_string(val.asSeconds()));
 			target.draw(text);
 		}
-		void write             (const sf::Time & val, const sf::Vector2f & pos)
+		void write             (sf::RenderTarget & target, const sf::Time & val, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
-			write(val);
+			write(target, val);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (const sf::Time & val)
+		void writeRightAligned (sf::RenderTarget & target, const sf::Time & val)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(std::to_string(val.asSeconds()));
@@ -292,7 +287,7 @@ namespace sfext
 			target.draw(text);
 			setPosition(tempPos);
 		}
-		void writeRightAligned (const sf::Time & val, const sf::Vector2f & pos)
+		void writeRightAligned (sf::RenderTarget & target, const sf::Time & val, const sf::Vector2f & pos)
 		{
 			sf::Vector2f tempPos = getPosition();
 			text.setString(std::to_string(val.asSeconds()));

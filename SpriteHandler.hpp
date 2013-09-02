@@ -20,27 +20,22 @@ namespace sfext
 	class SpriteHandler
 	{
 	private:
-		sf::RenderTarget & target;
 		TextureHandler textures;
 		std::map<sf::String, sf::Sprite> sprites;
 	public:
 		// Constructors
-		explicit SpriteHandler(sf::RenderTarget & trgt) : target(trgt)
+		SpriteHandler()
 		{
 		}
-		SpriteHandler         (sf::RenderTarget & trgt, const TextureHandler & textureHandler) : target(trgt), textures(textureHandler)
+		explicit SpriteHandler(const TextureHandler & textureHandler) : textures(textureHandler)
 		{
-			for (auto & texture : textures)
+			for (const auto & texture : textures)
 			{
 				sprites[texture.first] = sf::Sprite(texture.second);
 			}
 		}
-		SpriteHandler         (const SpriteHandler & rhs) : target(rhs.target), textures(rhs.textures)
+		SpriteHandler         (const SpriteHandler & rhs) : textures(rhs.textures), sprites(rhs.sprites)
 		{
-			for (auto & texture : textures)
-			{
-				sprites[texture.first] = sf::Sprite(texture.second);
-			}
 		}
 		// Destructor
 		~SpriteHandler()
@@ -58,10 +53,6 @@ namespace sfext
 		const TextureHandler & getTextureHandler() const
 		{
 			return textures;
-		}
-		sf::RenderTarget &     getRenderTarget  () const
-		{
-			return target;
 		}
 		// Mutators
 		void setRepeated   (const sf::String & alias, bool repeated)
@@ -221,14 +212,14 @@ namespace sfext
 			}
 			return false;
 		}
-		void draw         (const sf::String & alias, sf::RenderStates states = sf::RenderStates::Default) const
+		void draw         (sf::RenderTarget & target, const sf::String & alias, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasTexture(alias))
 			{
 				target.draw(sprites.at(alias), states);
 			}
 		}
-		void draw         (const sf::String & alias, sf::Vector2f & position, const sf::RenderStates states = sf::RenderStates::Default) const
+		void draw         (sf::RenderTarget & target, const sf::String & alias, sf::Vector2f & position, const sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasTexture(alias))
 			{
@@ -237,7 +228,7 @@ namespace sfext
 				target.draw(tempSprite, states);
 			}
 		}
-		void draw         (const sf::String & alias, sf::IntRect & rectangle, const sf::RenderStates states = sf::RenderStates::Default) const
+		void draw         (sf::RenderTarget & target, const sf::String & alias, sf::IntRect & rectangle, const sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasTexture(alias))
 			{
@@ -246,7 +237,7 @@ namespace sfext
 				target.draw(tempSprite, states);
 			}
 		}
-		void draw         (const sf::String & alias, sf::Vector2f & position, const sf::IntRect & rectangle, sf::RenderStates states = sf::RenderStates::Default) const
+		void draw         (sf::RenderTarget & target, const sf::String & alias, sf::Vector2f & position, const sf::IntRect & rectangle, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasTexture(alias))
 			{
@@ -256,7 +247,7 @@ namespace sfext
 				target.draw(tempSprite, states);
 			}
 		}
-		void batch        (const sf::String & alias, const std::vector<sf::Vector2f> & positions, sf::RenderStates states = sf::RenderStates::Default) const
+		void batch        (sf::RenderTarget & target, const sf::String & alias, const std::vector<sf::Vector2f> & positions, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasTexture(alias))
 			{
@@ -274,7 +265,7 @@ namespace sfext
 				target.draw(vertices, states);
 			}
 		}
-		void batch        (const sf::String & alias, const std::vector<sf::Vector2f> & positions, const std::vector<sf::IntRect> & rectangles, sf::RenderStates states = sf::RenderStates::Default) const
+		void batch        (sf::RenderTarget & target, const sf::String & alias, const std::vector<sf::Vector2f> & positions, const std::vector<sf::IntRect> & rectangles, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasTexture(alias) && positions.size() == rectangles.size())
 			{
@@ -290,7 +281,7 @@ namespace sfext
 				target.draw(vertices, states);
 			}
 		}
-		void batch        (const sf::String & alias, const std::vector<sf::Vector2f> & positions, const sf::IntRect & rectangle, sf::RenderStates states = sf::RenderStates::Default) const
+		void batch        (sf::RenderTarget & target, const sf::String & alias, const std::vector<sf::Vector2f> & positions, const sf::IntRect & rectangle, sf::RenderStates states = sf::RenderStates::Default) const
 		{
 			if (hasTexture(alias))
 			{
