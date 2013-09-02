@@ -64,4 +64,12 @@ namespace oak
 		float theta = static_cast<float>(randomReal(0, twoPi));
 		return sf::Vector2f(center.x + xRadius * std::cos(theta), center.y + yRadius * std::sin(theta));
 	}
+	sf::Color    randomColor   (sf::Uint8 alpha = 255)
+	{
+		return sf::Color(randomInt(0, 255), randomInt(0, 255), randomInt(0, 255), alpha);
+	}
+	sf::Color    randomColor   (sf::Uint8 minR, sf::Uint8 maxR, sf::Uint8 minG, sf::Uint8 maxG, sf::Uint8 minB, sf::Uint8 maxB, sf::Uint8 minA, sf::Uint8 maxA)
+	{
+		return sf::Color(randomInt(minR, maxR), randomInt(minG, maxG), randomInt(minB, maxB), randomInt(minA, maxA));
+	}
 }
