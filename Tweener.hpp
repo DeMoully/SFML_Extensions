@@ -301,7 +301,6 @@ namespace oak
 		void update(const sf::Time & elapsed)
 		{
 			time += elapsed;
-			std::cout << time.asSeconds() << std::endl;
 			switch (style)
 			{
 			case TweenerStyle::Constant:
