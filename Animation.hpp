@@ -123,6 +123,14 @@ namespace sfext
 		{
 			spriteSheet = sprite;
 		}
+		void setRotation      (float angle)
+		{
+			spriteSheet.setRotation(angle);
+		}
+		void setColor         (const sf::Color & color)
+		{
+			spriteSheet.setColor(color);
+		}
 		// Utilities
 		std::size_t currentFrame      () const
 		{
