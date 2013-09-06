@@ -5,7 +5,7 @@
 
 namespace oak
 {
-	class FlexibleClock
+	class FlexibleClock final
 	{
 	private:
 		sf::Clock clock;
