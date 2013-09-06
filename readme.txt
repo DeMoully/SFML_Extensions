@@ -4,6 +4,8 @@ Animation.hpp - this header file defines the Animation class, which is a member 
 
 AnimationHandler.hpp - this header file defines the AnimationHandler class, which is a member of the sfext namespace. This class stores Animations and has functions for batching.
 
+FileWrapper.hpp - this header file wraps the functionalities of std::fstream in a simple and easy to use class.
+
 FlexibleClock.hpp - this header file defines the FlexibleClock class, which is a member of the oak namespace (which deals with math and math-related classes). It can be paused, sped up, slowed down, etc.
 
 FontHandler.hpp - this header file defines the FontHandler class, which maps sf::Strings to sf::Fonts and is a member of the sfext namespace. This keeps the user from needing to keep track of fonts themselves and is used internally in the sfext::TextHandler.
