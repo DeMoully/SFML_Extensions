@@ -7,48 +7,56 @@
 
 namespace oak
 {
-	double dotProduct(const sf::Vector2f & lhs, const sf::Vector2f & rhs)
+	float dotProduct(const sf::Vector2f & lhs, const sf::Vector2f & rhs)
 	{
 		return lhs.x * rhs.x + lhs.y * rhs.y;
 	}
-	double dotProduct(const sf::Vector3f & lhs, const sf::Vector3f & rhs)
+	float dotProduct(const sf::Vector3f & lhs, const sf::Vector3f & rhs)
 	{
 		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
 	}
 
-	double distance(const sf::Vector2f & vec)
+	float distance(const sf::Vector2f & vec)
 	{
-		return std::sqrt(vec.x * vec.x + vec.y * vec.y);
+		return std::sqrtf(vec.x * vec.x + vec.y * vec.y);
 	}
-	double distance(const sf::Vector2f & lhs, const sf::Vector2f & rhs)
+	float distance(const sf::Vector2f & lhs, const sf::Vector2f & rhs)
 	{
-		return std::sqrt((rhs.x - lhs.x) * (rhs.x - lhs.x) + (rhs.y - lhs.y) * (rhs.y - lhs.y));
+		return std::sqrtf((rhs.x - lhs.x) * (rhs.x - lhs.x) + (rhs.y - lhs.y) * (rhs.y - lhs.y));
 	}
-	double distance(const sf::Vector3f & vec)
+	float distance(const sf::Vector3f & vec)
 	{
-		return std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+		return std::sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 	}
-	double distance(const sf::Vector3f & lhs, const sf::Vector3f & rhs)
+	float distance(const sf::Vector3f & lhs, const sf::Vector3f & rhs)
 	{
-		return std::sqrt((lhs.x - rhs.x) * (lhs.x - rhs.x) + (lhs.y - rhs.y) * (lhs.y - rhs.y) + (lhs.z - rhs.z) * (lhs.z - rhs.z));
+		return std::sqrtf((lhs.x - rhs.x) * (lhs.x - rhs.x) + (lhs.y - rhs.y) * (lhs.y - rhs.y) + (lhs.z - rhs.z) * (lhs.z - rhs.z));
 	}
 
-	double distanceSquared(const sf::Vector2f & vec)
+	float distanceSquared(const sf::Vector2f & vec)
 	{
 		return vec.x * vec.x + vec.y * vec.y;
 	}
-	double distanceSquared(const sf::Vector2f & lhs, const sf::Vector2f & rhs)
+	float distanceSquared(const sf::Vector2f & lhs, const sf::Vector2f & rhs)
 	{
 		return (rhs.x - lhs.x) * (rhs.x - lhs.x) + (rhs.y - lhs.y) * (rhs.y - lhs.y);
 	}
-
-	double angle(const sf::Vector2f & point)
+	float distanceSquared(const sf::Vector3f & vec)
 	{
-		return std::atan2(point.y, point.x);
+		return vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
 	}
-	double angle(const sf::Vector2f & center, const sf::Vector2f & point)
+	float distanceSquared(const sf::Vector3f & lhs, const sf::Vector3f & rhs)
 	{
-		return std::atan2(point.y - center.y, point.x - center.x);
+		return (rhs.x - lhs.x) * (rhs.x - lhs.x) + (rhs.y - lhs.y) * (rhs.y - lhs.y) + (rhs.z - lhs.z) * (rhs.z - lhs.z);
+	}
+
+	float angle(const sf::Vector2f & point)
+	{
+		return std::atan2f(point.y, point.x);
+	}
+	float angle(const sf::Vector2f & center, const sf::Vector2f & point)
+	{
+		return std::atan2f(point.y - center.y, point.x - center.x);
 	}
 
 	sf::Vector2f normalize(const sf::Vector2f & vec)
@@ -102,8 +110,8 @@ namespace oak
 
 	sf::Vector2f rotate(const sf::Vector2f & vec, float radians)
 	{
-		float length = static_cast<float>(distance(vec));
-		float currentAngle = static_cast<float>(angle(vec));
+		float length = distance(vec);
+		float currentAngle = angle(vec);
 		float newAngle = currentAngle + radians;
 		return sf::Vector2f(length * std::cosf(newAngle), length * std::sinf(newAngle));
 	}
@@ -114,7 +122,7 @@ namespace oak
 
 	sf::Vector2f mapToRotation(const sf::Vector2f & vec, float radians)
 	{
-		float length = static_cast<float>(distance(vec));
+		float length = distance(vec);
 		return sf::Vector2f(length * std::cosf(radians), length * std::sinf(radians));
 	}
 	sf::Vector2f mapToRotation(const sf::Vector2f & vec, const sf::Vector2f & center, float radians)
@@ -125,6 +133,22 @@ namespace oak
 	sf::Vector2f unitVector(float radians)
 	{
 		return sf::Vector2f(std::cosf(radians), std::sinf(radians));
+	}
+
+	sf::Vector2f projection(const sf::Vector2f & u, const sf::Vector2f & v)
+	{
+		float denominator = distanceSquared(v);
+		return denominator ? (dotProduct(u, v) * v / denominator) : sf::Vector2f();
+	}
+	sf::Vector3f projection(const sf::Vector3f & u, const sf::Vector3f & v)
+	{
+		float denominator = distanceSquared(v);
+		return denominator ? (dotProduct(u, v) * v / denominator) : sf::Vector3f();
+	}
+
+	sf::Vector3f crossProduct(const sf::Vector3f & lhs, const sf::Vector3f & rhs)
+	{
+		return sf::Vector3f(lhs.y * rhs.z - lhs.z * rhs.y, lhs.z * rhs.x - lhs.x * rhs.z, lhs.x * rhs.y - lhs.y * rhs.x);
 	}
 
 	template <class T>
@@ -138,10 +162,7 @@ namespace oak
 		{
 			return std::max(minimum, maximum);
 		}
-		else
-		{
-			return value;
-		}
+		return value;
 	}
 	
 	float degreesToRadians(float degrees)
