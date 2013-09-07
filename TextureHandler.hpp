@@ -14,7 +14,7 @@ namespace sfext
 	typedef std::map<sf::String, sf::Texture>::reverse_iterator       ReverseTextureIterator;
 	typedef std::map<sf::String, sf::Texture>::const_reverse_iterator ConstReverseTextureIterator;
 
-	class TextureHandler
+	class TextureHandler final
 	{
 	private:
 		std::map<sf::String, sf::Texture> textures;

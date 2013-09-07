@@ -7,7 +7,7 @@
 
 namespace sfext
 {
-	class FontHandler
+	class FontHandler final
 	{
 	private:
 		std::map<sf::String, sf::Font> fonts;

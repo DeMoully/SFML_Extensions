@@ -26,7 +26,7 @@ namespace ash
 	typedef NumericLine::reverse_iterator       ReverseNumericLineIterator;
 	typedef NumericLine::const_reverse_iterator ConstReverseNumericLineIterator;
 
-	class NumericFile
+	class NumericFile final
 	{
 	private:
 		std::deque<NumericLine> contents;

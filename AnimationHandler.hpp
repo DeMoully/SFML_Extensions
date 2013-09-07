@@ -18,7 +18,7 @@ namespace sfext
 	typedef std::map<sf::String, Animation>::reverse_iterator       ReverseAnimationIterator;
 	typedef std::map<sf::String, Animation>::const_reverse_iterator ConstReverseAnimationIterator;
 
-	class AnimationHandler
+	class AnimationHandler final
 	{
 	private:
 		SpriteHandler sprites;

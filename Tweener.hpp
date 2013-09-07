@@ -26,7 +26,7 @@ namespace oak
 		WrapAround
 	};
 
-	class Tweener
+	class Tweener final 
 	{
 	private:
 		FlexibleClock clock;
@@ -261,7 +261,7 @@ namespace oak
 		}
 	};
 
-	class DiscreteTweener
+	class DiscreteTweener final
 	{
 	private:
 		double start;

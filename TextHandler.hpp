@@ -12,7 +12,7 @@
 
 namespace sfext
 {
-	class TextHandler
+	class TextHandler final
 	{
 	private:
 		FontHandler fonts;

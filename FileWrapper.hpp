@@ -17,7 +17,7 @@ namespace ash
 	typedef std::deque<std::string>::reverse_iterator       ReverseFileIterator;
 	typedef std::deque<std::string>::const_reverse_iterator ConstReverseFileIterator;
 
-	class FileWrapper
+	class FileWrapper final
 	{
 	private:
 		std::deque<std::string> fileContents;

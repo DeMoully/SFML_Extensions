@@ -17,7 +17,7 @@ namespace sfext
 	typedef std::map<sf::String, sf::Sprite>::reverse_iterator       ReverseSpriteIterator;
 	typedef std::map<sf::String, sf::Sprite>::const_reverse_iterator ConstReverseSpriteIterator;
 
-	class SpriteHandler
+	class SpriteHandler final
 	{
 	private:
 		TextureHandler textures;

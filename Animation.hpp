@@ -8,7 +8,7 @@
 
 namespace sfext
 {
-	class Animation
+	class Animation final
 	{
 	private:
 		sf::Sprite         spriteSheet;

@@ -4,7 +4,7 @@
 
 namespace oak
 {
-	class ForwardRangeIterator : std::iterator<std::random_access_iterator_tag, int>
+	class ForwardRangeIterator final : std::iterator<std::random_access_iterator_tag, int>
 	{
 	private:
 		int data;
@@ -78,7 +78,7 @@ namespace oak
 		return ForwardRangeIterator(*rhs + increase);
 	}
 
-	class ForwardRange
+	class ForwardRange final
 	{
 	private:
 		int lower;

@@ -4,7 +4,7 @@
 
 namespace oak
 {
-	class RangeIterator : public std::iterator<std::random_access_iterator_tag, int>
+	class RangeIterator final : public std::iterator<std::random_access_iterator_tag, int>
 	{
 	private:
 		int data;
@@ -81,7 +81,7 @@ namespace oak
 		return RangeIterator(*iterator + increase, iterator.getSpan());
 	}
 
-	class Range
+	class Range final
 	{
 	private:
 		int first;
