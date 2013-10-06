@@ -151,6 +151,8 @@ namespace oak
 		return sf::Vector3f(lhs.y * rhs.z - lhs.z * rhs.y, lhs.z * rhs.x - lhs.x * rhs.z, lhs.x * rhs.y - lhs.y * rhs.x);
 	}
 
+	// Non-vector functions
+
 	template <class T>
 	T clamp(const T & value, const T & minimum, const T & maximum)
 	{
@@ -165,6 +167,17 @@ namespace oak
 		return value;
 	}
 	
+	template <class T>
+	bool withinRange(const T & value, const T & minimum, const T & maximum)
+	{
+		return minimum < maximum ? minimum <= value && value <= maximum : maximum <= value && value <= minimum;
+	}
+	template <class T>
+	bool outOfRange (const T & value, const T & minimum, const T & maximum)
+	{
+		return !withinRange(value, minimum, maximum);
+	}
+	
 	float degreesToRadians(float degrees)
 	{
 		const float pi = 3.14159265f;
@@ -174,5 +187,11 @@ namespace oak
 	{
 		const float pi = 3.14159265f;
 		return radians * 180.f / pi;
+	}
+
+	template <class T>
+	int sign(const T & value)
+	{
+		return value ? (value < 0 ? -1 : 1) : 0;
 	}
 }
