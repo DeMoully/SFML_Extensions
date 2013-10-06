@@ -4,9 +4,11 @@
 #include <list>
 #include <iostream>
 #include <functional>
+#include <set>
 
 #include "FileWrapper.hpp"
 #include "FormattingFunctions.hpp"
+#include "ContainerAlgorithms.hpp"
 
 #include <SFML/System/String.hpp>
 
@@ -33,40 +35,45 @@ namespace ash
 		{
 		}
 		// Accessors
-		sf::String     getValue          (const sf::String & variable, const sf::String & tag) const
+		sf::String             getValue          (const sf::String & variable, const sf::String & tag) const
 		{
 			return hasTag(variable, tag) ? values.at(variable).at(tag) : "";
 		}
+		std::set<sf::String>   getValueNames     () const
+		{
+			return getFirstValues(values);
+		}
+		std::set<sf::String>   getTags           (const sf::String & variable) const
+		{
+			if (hasVariable(variable))
+			{
+				return getFirstValues(values.at(variable));
+			}
+			return std::set<sf::String>();
+		}
 		template <class T>
-		T              interpretAsNumber (const sf::String & variable, const sf::String & tag) const
+		T                      interpretAsNumber (const sf::String & variable, const sf::String & tag) const
 		{
 			return static_cast<T>(std::strtod(getValue(variable, tag).toAnsiString().c_str(), nullptr));
 		}
 		template <class T>
-		std::list<T>   interpretAsList   (const sf::String & variable, const sf::String & tag) const
+		std::list<T>           interpretAsList   (const sf::String & variable, const sf::String & tag) const
 		{
+			// This is intended for lists of numbers only
+			std::list<std::string> split = splitString(getValue(variable, tag));
 			std::list<T> list;
-			sf::String str = getValue(variable, tag);
-			sf::String::ConstIterator iterator = str.begin();
-			std::string temp;
-			while (iterator != str.end())
+			for (const std::string & str : split)
 			{
-				if (*iterator != ',')
-				{
-					temp += *iterator;
-				}
-				else
-				{
-					list.push_back(T(std::strtod(temp.c_str(), nullptr)));
-					temp.clear();
-				}
-				++iterator;
+				list.push_back(static_cast<T>(strtod(str.c_str(), nullptr)));
 			}
-			list.push_back(T(std::strtod(temp.c_str(), nullptr)));
 			return list;
 		}
+		std::list<std::string> interpretAsList   (const sf::String & variable, const sf::String & tag) const
+		{
+			return splitString(getValue(variable, tag));
+		}
 		template <class T>
-		sf::Vector2<T> interpretAsVector2(const sf::String & variable, const sf::String & tag) const
+		sf::Vector2<T>         interpretAsVector2(const sf::String & variable, const sf::String & tag) const
 		{
 			std::list<T> list = interpretAsList<T>(variable, tag);
 			sf::Vector2<T> result;
@@ -77,7 +84,7 @@ namespace ash
 			return result;
 		}
 		template <class T>
-		sf::Vector3<T> interpretAsVector3(const sf::String & variable, const sf::String & tag) const
+		sf::Vector3<T>         interpretAsVector3(const sf::String & variable, const sf::String & tag) const
 		{
 			std::list<T> list = interpretAsList<T>(variable, tag);
 			sf::Vector3<T> result;
@@ -88,7 +95,7 @@ namespace ash
 			result.z = *iterator;
 			return result;
 		}
-		sf::Color      interpretAsColor  (const sf::String & variable, const sf::String & tag) const
+		sf::Color              interpretAsColor  (const sf::String & variable, const sf::String & tag) const
 		{
 			std::list<sf::Uint8> list = interpretAsList<sf::Uint8>(variable, tag);
 			sf::Color result;
@@ -108,26 +115,26 @@ namespace ash
 		// Utilities
 		void parseValues()
 		{
-			file.clearContentsIf<std::size_t>(lengthIs, 0);
-			file.applyFunctionToContents(removeLeadingSpaces);
-			file.applyFunctionToContents(removeTrailingSpaces);
-			file.applyFunctionToContents([](std::string str)
+			file.clearContentsIf<std::size_t>(lengthIs, 0); // Get rid of empty lines
+			file.applyFunctionToContents(removeLeadingSpaces); // Get rid of all spaces
+			file.applyFunctionToContents(removeTrailingSpaces); // Get rid of all spaces
+			file.applyFunctionToContents([](std::string str) // Put all lines in the format that we want
 			{
 				std::string result;
 				auto iterator = str.begin();
-				while (iterator != str.end() && *iterator != ':')
+				while (iterator != str.end() && *iterator != ':') // Keep the variable name
 				{
 					result += *iterator++;
 				}
-				if (iterator != str.end())
+				if (iterator != str.end()) // Move up by one if the line still has more values
 				{
 					result += *iterator++;
 				}
-				while (iterator != str.end() && (*iterator) == ' ')
+				while (iterator != str.end() && (*iterator) == ' ') // Get rid of all spaces before the value
 				{
 					++iterator;
 				}
-				while (iterator != str.end())
+				while (iterator != str.end()) // Take the rest and keep as the value
 				{
 					result += *iterator++;
 				}
@@ -140,7 +147,7 @@ namespace ash
 				{
 					std::string varName = std::string(iterator->cbegin() + 10, iterator->cend());
 					++iterator;
-					while (iterator != file.cend() && *iterator != "var_end")
+					while (iterator != file.cend() && *iterator != "var_end") // Go until the end of the declaration is reached
 					{
 						std::string::size_type colonPos = iterator->find_first_of(':');
 						if (colonPos != std::string::npos)
@@ -159,11 +166,11 @@ namespace ash
 		{
 			return values.find(variable) != values.cend();
 		}
-		bool hasTag(const sf::String & variable, const sf::String & tag) const
+		bool hasTag     (const sf::String & variable, const sf::String & tag) const
 		{
 			return hasVariable(variable) && values.at(variable).find(tag) != values.at(variable).cend();
 		}
-		void updateFile()
+		void updateFile ()
 		{
 			file.clearContents();
 			for (auto variable : values)
