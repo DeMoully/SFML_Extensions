@@ -130,7 +130,7 @@ namespace sfext
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
-			write(vec);
+			write(target, vec);
 			setPosition(tempPos);
 		}
 		template <class T>
@@ -162,7 +162,7 @@ namespace sfext
 		{
 			sf::Vector2f tempPos = getPosition();
 			setPosition(pos);
-			write(vec);
+			write(target, vec);
 			setPosition(tempPos);
 		}
 		template <class T>
