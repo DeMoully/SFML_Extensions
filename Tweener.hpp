@@ -30,17 +30,17 @@ namespace oak
 	{
 	private:
 		FlexibleClock clock;
-		double start;
-		double finish;
+		float start;
+		float finish;
 		TweenerStyle style;
 		TweenerPeriod period;
 		sf::Time duration;
 	public:
 		// Constructors
-		Tweener() : clock(false), start(0), finish(0), style(TweenerStyle::Linear), period(TweenerPeriod::Single), duration(sf::Time::Zero)
+		Tweener() : clock(false), start(0.f), finish(0.f), style(TweenerStyle::Linear), period(TweenerPeriod::Single), duration(sf::Time::Zero)
 		{
 		}
-		Tweener(double startVal, double finishVal, const sf::Time & dur) : clock(false), start(startVal), finish(finishVal), style(TweenerStyle::Linear), period(TweenerPeriod::Single), duration(dur)
+		Tweener(float startVal, float finishVal, const sf::Time & dur) : clock(false), start(startVal), finish(finishVal), style(TweenerStyle::Linear), period(TweenerPeriod::Single), duration(dur)
 		{
 		}
 		// Destructor
@@ -90,7 +90,7 @@ namespace oak
 			return clock.getModifier();
 		}
 		// Utilities
-		double get  () const
+		float  get  () const
 		{
 			switch (style)
 			{
@@ -114,7 +114,7 @@ namespace oak
 							}
 							else
 							{
-								return start + (finish - start) * static_cast<double>(clock.getElapsedTime().asSeconds() / duration.asSeconds());
+								return start + (finish - start) * (clock.getElapsedTime().asSeconds() / duration.asSeconds());
 							}
 						}
 					case TweenerPeriod::BackAndForth:
@@ -123,17 +123,17 @@ namespace oak
 							if (time >= duration)
 							{
 								time -= duration;
-								return finish - (finish - start) * static_cast<double>(time.asSeconds() / duration.asSeconds());
+								return finish - (finish - start) * (time.asSeconds() / duration.asSeconds());
 							}
 							else
 							{
-								return start + (finish - start) * static_cast<double>(time.asSeconds() / duration.asSeconds());
+								return start + (finish - start) * (time.asSeconds() / duration.asSeconds());
 							}
 						}
 					case TweenerPeriod::WrapAround:
 						{
 							sf::Time time = sf::seconds(std::fmodf(clock.getElapsedTime().asSeconds(), duration.asSeconds()));
-							return start + (finish - start) * static_cast<double>(time.asSeconds() / duration.asSeconds());
+							return start + (finish - start) * (time.asSeconds() / duration.asSeconds());
 						}
 					default:
 						{
@@ -157,7 +157,7 @@ namespace oak
 							}
 							else
 							{
-								return start + (finish - start) * std::pow(static_cast<double>(clock.getElapsedTime().asSeconds() / duration.asSeconds()), 2.0);
+								return start + (finish - start) * std::powf((clock.getElapsedTime().asSeconds() / duration.asSeconds()), 2.f);
 							}
 						}
 					case TweenerPeriod::BackAndForth:
@@ -166,17 +166,17 @@ namespace oak
 							if (time >= duration)
 							{
 								time -= duration;
-								return start + (finish - start) * std::pow(1.0 - static_cast<double>(time.asSeconds() / duration.asSeconds()), 2.0);
+								return start + (finish - start) * std::powf(1.f - (time.asSeconds() / duration.asSeconds()), 2.f);
 							}
 							else
 							{
-								return start + (finish - start) * std::pow(static_cast<double>(time.asSeconds() / duration.asSeconds()), 2.0);
+								return start + (finish - start) * std::powf((time.asSeconds() / duration.asSeconds()), 2.f);
 							}
 						}
 					case TweenerPeriod::WrapAround:
 						{
 							sf::Time time = sf::seconds(std::fmodf(clock.getElapsedTime().asSeconds(), duration.asSeconds()));
-							return start + (finish - start) * std::pow(static_cast<double>(time.asSeconds() / duration.asSeconds()), 2.0);
+							return start + (finish - start) * std::powf((time.asSeconds() / duration.asSeconds()), 2.f);
 						}
 					default:
 						{
@@ -200,17 +200,17 @@ namespace oak
 							}
 							else
 							{
-								return start + (finish - start) * .5 + (finish - start) * -.5 * std::cos(3.141592 * static_cast<double>(clock.getElapsedTime().asSeconds() / duration.asSeconds()));
+								return start + (finish - start) * .5f + (finish - start) * -.5f * std::cosf(3.141592f * (clock.getElapsedTime().asSeconds() / duration.asSeconds()));
 							}
 						}
 					case TweenerPeriod::BackAndForth:
 						{
-							return start + (finish - start) * .5 + (finish - start) * -.5 * std::cos(3.141592 * static_cast<double>(clock.getElapsedTime().asSeconds() / duration.asSeconds()));
+							return start + (finish - start) * .5f + (finish - start) * -.5f * std::cosf(3.141592f * (clock.getElapsedTime().asSeconds() / duration.asSeconds()));
 						}
 					case TweenerPeriod::WrapAround:
 						{
 							sf::Time time = sf::seconds(std::fmodf(clock.getElapsedTime().asSeconds(), duration.asSeconds()));
-							return start + (finish - start) * .5 + (finish - start) * -.5 * std::cos(3.141592 * static_cast<double>(time.asSeconds() / duration.asSeconds()));
+							return start + (finish - start) * .5f + (finish - start) * -.5f * std::cosf(3.141592f * (time.asSeconds() / duration.asSeconds()));
 						}
 					default:
 						{
@@ -234,20 +234,20 @@ namespace oak
 							}
 							else
 							{
-								return start + (finish - start) * std::sqrt(1 - std::pow(1 - (2.0 * clock.getElapsedTime().asSeconds() / duration.asSeconds()), 2.0));
+								return start + (finish - start) * std::sqrtf(1.f - std::powf(1.f - (2.f * clock.getElapsedTime().asSeconds() / duration.asSeconds()), 2.f));
 							}
 						}
 					case TweenerPeriod::BackAndForth:
 					case TweenerPeriod::WrapAround:
 						{
 							sf::Time time = sf::seconds(fmodf(clock.getElapsedTime().asSeconds(), duration.asSeconds()));
-							return start + (finish - start) * std::sqrt(1 - std::pow(1 - (2.0 * time.asSeconds() / duration.asSeconds()), 2.0));
+							return start + (finish - start) * std::sqrtf(1.f - std::powf(1.f - (2.f * time.asSeconds() / duration.asSeconds()), 2.f));
 						}
 					}
 				}
 			case TweenerStyle::Random:
 				{
-					return randomReal(start, finish);
+					return static_cast<float>(randomReal(start, finish));
 				}
 			default:
 				{
