@@ -173,10 +173,26 @@ namespace ash
 			// Places a line at the end of the file
 			fileContents.push_back(str);
 		}
+		void appendToLine    (std::size_t index, const std::string & str)
+		{
+			// Append the contents of str to the indexth line of the file
+			if (index < size())
+			{
+				fileContents.at(index).append(str);
+			}
+		}
 		void prependLine     (const std::string & str)
 		{
 			// Inserts a line at the beginning of the file
 			fileContents.push_front(str);
+		}
+		void prependToLine   (std::size_t index, const std::string & str)
+		{
+			// Prepend the contents of str to the indexth line of the file
+			if (index < size())
+			{
+				fileContents.at(index).insert(fileContents.at(index).begin(), str.begin(), str.end());
+			}
 		}
 		void insertLine      (std::size_t index, const std::string & str)
 		{
@@ -943,6 +959,126 @@ namespace ash
 		{
 			// Return a const reverse iterator to the (reverse) end of the file
 			return fileContents.crend();
+		}
+		FileIterator             find   (char character)
+		{
+			// Find the first line containing character and return an iterator to that line
+			FileIterator iterator = begin();
+			while (iterator != end())
+			{
+				std::string::size_type position = iterator->find(character);
+				if (position != std::string::npos)
+				{
+					return iterator;
+				}
+				++iterator;
+			}
+			return iterator;
+		}
+		FileIterator             find   (const std::string & str)
+		{
+			// Find the first line containing str and return an iterator to that line
+			FileIterator iterator = begin();
+			while (iterator != end())
+			{
+				std::string::size_type position = iterator->find(str);
+				if (position != std::string::npos)
+				{
+					return iterator;
+				}
+				++iterator;
+			}
+			return iterator;
+		}
+		ConstFileIterator        find   (char character) const
+		{
+			// Find the first line containing character and return an iterator to that line
+			ConstFileIterator iterator = cbegin();
+			while (iterator != cend())
+			{
+				std::string::size_type position = iterator->find(character);
+				if (position != std::string::npos)
+				{
+					return iterator;
+				}
+				++iterator;
+			}
+			return iterator;
+		}
+		ConstFileIterator        find   (const std::string & str) const
+		{
+			// Find the first line containing str and return an iterator to that line
+			ConstFileIterator iterator = cbegin();
+			while (iterator != cend())
+			{
+				std::string::size_type position = iterator->find(str);
+				if (position != std::string::npos)
+				{
+					return iterator;
+				}
+				++iterator;
+			}
+			return iterator;
+		}
+		ReverseFileIterator      rfind  (char character)
+		{
+			// Find the first line containing character and return an iterator to that line
+			ReverseFileIterator iterator = rbegin();
+			while (iterator != rend())
+			{
+				std::string::size_type position = iterator->rfind(character);
+				if (position != std::string::npos)
+				{
+					return iterator;
+				}
+				++iterator;
+			}
+			return iterator;
+		}
+		ReverseFileIterator      rfind  (const std::string & str)
+		{
+			// Find the first line containing str and return an iterator to that line
+			ReverseFileIterator iterator = rbegin();
+			while (iterator != rend())
+			{
+				std::string::size_type position = iterator->rfind(str);
+				if (position != std::string::npos)
+				{
+					return iterator;
+				}
+				++iterator;
+			}
+			return iterator;
+		}
+		ConstReverseFileIterator rfind  (char character) const
+		{
+			// Find the first line containing character and return an iterator to that line
+			ConstReverseFileIterator iterator = crbegin();
+			while (iterator != crend())
+			{
+				std::string::size_type position = iterator->rfind(character);
+				if (position != std::string::npos)
+				{
+					return iterator;
+				}
+				++iterator;
+			}
+			return iterator;
+		}
+		ConstReverseFileIterator rfind  (const std::string & str) const
+		{
+			// Find the first line containing str and return an iterator to that line
+			ConstReverseFileIterator iterator = crbegin();
+			while (iterator != crend())
+			{
+				std::string::size_type position = iterator->rfind(str);
+				if (position != std::string::npos)
+				{
+					return iterator;
+				}
+				++iterator;
+			}
+			return iterator;
 		}
 		// Overloaded Operators
 		FileWrapper &       operator =  (const FileWrapper & rhs)
